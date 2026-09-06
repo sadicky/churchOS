@@ -149,3 +149,108 @@ export interface FinancialCategory {
 
 export type Transaction = Database["public"]["Tables"]["transactions"]["Row"];
 export type Donation = Database["public"]["Tables"]["donations"]["Row"];
+
+export interface Group {
+  id: string;
+  organization_id: string;
+  campus_id: string | null;
+  name: string;
+  description: string | null;
+  leader_id: string | null;
+  meeting_day: string | null;
+  meeting_time: string | null;
+  meeting_location: string | null;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface GroupMember {
+  id: string;
+  group_id: string;
+  member_id: string;
+  role: "LEADER" | "CO_LEADER" | "HOST" | "MEMBER" | string;
+  joined_at: string;
+  created_at: string;
+}
+
+export interface GroupDetailed extends Group {
+  leader?: {
+    id: string;
+    first_name: string;
+    last_name: string;
+    email: string | null;
+    phone: string | null;
+  } | null;
+  campus?: {
+    id: string;
+    name: string;
+  } | null;
+  members_count?: number;
+  members?: Array<{
+    id: string;
+    role: string;
+    joined_at: string;
+    member: {
+      id: string;
+      first_name: string;
+      last_name: string;
+      email: string | null;
+      phone: string | null;
+      membership_status: string;
+    };
+  }>;
+}
+
+export interface Ministry {
+  id: string;
+  organization_id: string;
+  name: string;
+  description: string | null;
+  leader_id: string | null;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface MinistryMember {
+  id: string;
+  ministry_id: string;
+  member_id: string;
+  role: "LEADER" | "CO_LEADER" | "VOLUNTEER" | "COORDINATOR" | string;
+  joined_at: string;
+  created_at: string;
+}
+
+export interface MinistryDetailed extends Ministry {
+  leader?: {
+    id: string;
+    first_name: string;
+    last_name: string;
+    email: string | null;
+    phone: string | null;
+  } | null;
+  volunteers_count?: number;
+  members?: Array<{
+    id: string;
+    role: string;
+    joined_at: string;
+    member: {
+      id: string;
+      first_name: string;
+      last_name: string;
+      email: string | null;
+      phone: string | null;
+      membership_status: string;
+    };
+  }>;
+}
+
+export interface CommunityOverviewStats {
+  totalGroups: number;
+  activeGroups: number;
+  totalMinistries: number;
+  membersInGroups: number;
+  totalVolunteers: number;
+  integrationRate: number;
+}

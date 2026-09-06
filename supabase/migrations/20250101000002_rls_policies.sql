@@ -238,6 +238,21 @@ CREATE POLICY "Members can view ministry memberships"
         )
     );
 
+CREATE POLICY "Staff can manage ministry memberships"
+    ON public.ministry_members FOR ALL
+    USING (
+        ministry_id IN (
+            SELECT id FROM public.ministries
+            WHERE organization_id IN (SELECT public.get_user_organizations())
+        )
+    )
+    WITH CHECK (
+        ministry_id IN (
+            SELECT id FROM public.ministries
+            WHERE organization_id IN (SELECT public.get_user_organizations())
+        )
+    );
+
 -- ----------------------------------------------------------------------------
 -- 9. SERVICES, ATTENDANCE & EVENTS POLICIES
 -- ----------------------------------------------------------------------------
