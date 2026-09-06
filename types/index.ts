@@ -93,3 +93,32 @@ export interface MemberNote {
   created_at: string;
   updated_at: string;
 }
+
+export type Service = Database["public"]["Tables"]["services"]["Row"];
+export type ServiceInsert = Database["public"]["Tables"]["services"]["Insert"];
+export type ServiceUpdate = Database["public"]["Tables"]["services"]["Update"];
+export interface AttendanceSession {
+  id: string;
+  organization_id: string;
+  service_id: string | null;
+  campus_id: string | null;
+  title: string;
+  session_date: string;
+  qr_code_token: string | null;
+  is_open: boolean;
+  created_at: string;
+}
+
+export interface AttendanceRecord {
+  id: string;
+  organization_id: string;
+  session_id: string;
+  member_id: string | null;
+  visitor_name: string | null;
+  visitor_phone: string | null;
+  visitor_email: string | null;
+  is_visitor: boolean;
+  check_in_method: string;
+  recorded_by: string | null;
+  created_at: string;
+}
