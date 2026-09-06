@@ -75,6 +75,7 @@ $$ LANGUAGE sql SECURITY DEFINER STABLE;
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.organizations ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.campuses ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.campus_rooms ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.organization_members ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.members ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.member_notes ENABLE ROW LEVEL SECURITY;
@@ -152,6 +153,15 @@ CREATE POLICY "Members can view campuses in their organization"
 
 CREATE POLICY "Admins can manage campuses"
     ON public.campuses FOR ALL
+    USING (public.is_org_admin(organization_id))
+    WITH CHECK (public.is_org_admin(organization_id));
+
+CREATE POLICY "Members can view campus rooms in their organization"
+    ON public.campus_rooms FOR SELECT
+    USING (organization_id IN (SELECT public.get_user_organizations()));
+
+CREATE POLICY "Admins can manage campus rooms"
+    ON public.campus_rooms FOR ALL
     USING (public.is_org_admin(organization_id))
     WITH CHECK (public.is_org_admin(organization_id));
 

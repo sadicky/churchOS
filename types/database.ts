@@ -223,6 +223,49 @@ export interface Database {
           updated_at?: string;
         };
       };
+      campus_rooms: {
+        Row: {
+          id: string;
+          organization_id: string;
+          campus_id: string;
+          name: string;
+          code: string | null;
+          room_type: string;
+          capacity: number;
+          floor_location: string | null;
+          equipment_notes: string | null;
+          is_active: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          organization_id: string;
+          campus_id: string;
+          name: string;
+          code?: string | null;
+          room_type?: string;
+          capacity?: number;
+          floor_location?: string | null;
+          equipment_notes?: string | null;
+          is_active?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          organization_id?: string;
+          campus_id?: string;
+          name?: string;
+          code?: string | null;
+          room_type?: string;
+          capacity?: number;
+          floor_location?: string | null;
+          equipment_notes?: string | null;
+          is_active?: boolean;
+          updated_at?: string;
+        };
+      };
       organization_members: {
         Row: {
           id: string;

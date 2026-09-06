@@ -445,3 +445,45 @@ export interface AudienceCounts {
   volunteers: number;
   visitors: number;
 }
+
+// ==========================================
+// PHASE 13 — MULTI-CAMPUS & BÂTIMENTS
+// ==========================================
+
+export type CampusRoomType =
+  | "SANCTUARY"
+  | "HALL"
+  | "CLASSROOM"
+  | "OFFICE"
+  | "STUDIO"
+  | "OTHER";
+
+export type CampusRoom = Database["public"]["Tables"]["campus_rooms"]["Row"];
+export type CampusRoomInsert = Database["public"]["Tables"]["campus_rooms"]["Insert"];
+export type CampusRoomUpdate = Database["public"]["Tables"]["campus_rooms"]["Update"];
+
+export interface CampusRoomDetailed extends CampusRoom {
+  campus?: {
+    id: string;
+    name: string;
+    is_main: boolean;
+  } | null;
+}
+
+export interface CampusDetailed extends Campus {
+  members_count: number;
+  rooms_count: number;
+  total_capacity: number;
+  services_count: number;
+  groups_count: number;
+  rooms?: CampusRoom[];
+}
+
+export interface CampusOverviewStats {
+  totalCampuses: number;
+  mainCampusName: string;
+  totalRooms: number;
+  totalCapacity: number;
+  totalAffiliatedMembers: number;
+}
+

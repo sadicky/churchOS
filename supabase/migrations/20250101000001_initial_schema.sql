@@ -248,6 +248,26 @@ CREATE TRIGGER handle_updated_at_campuses
     FOR EACH ROW
     EXECUTE FUNCTION set_updated_at();
 
+CREATE TABLE IF NOT EXISTS campus_rooms (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    organization_id UUID NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+    campus_id UUID NOT NULL REFERENCES campuses(id) ON DELETE CASCADE,
+    name TEXT NOT NULL,
+    code TEXT,
+    room_type TEXT NOT NULL DEFAULT 'SANCTUARY',
+    capacity INTEGER NOT NULL DEFAULT 0,
+    floor_location TEXT,
+    equipment_notes TEXT,
+    is_active BOOLEAN NOT NULL DEFAULT TRUE,
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT TIMEZONE('utc'::text, NOW()),
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT TIMEZONE('utc'::text, NOW())
+);
+
+CREATE TRIGGER handle_updated_at_campus_rooms
+    BEFORE UPDATE ON campus_rooms
+    FOR EACH ROW
+    EXECUTE FUNCTION set_updated_at();
+
 -- ----------------------------------------------------------------------------
 -- 5. ORGANIZATION MEMBERS & RBAC
 -- ----------------------------------------------------------------------------
@@ -711,6 +731,8 @@ CREATE TABLE IF NOT EXISTS subscriptions (
 CREATE INDEX IF NOT EXISTS idx_org_members_org ON organization_members(organization_id);
 CREATE INDEX IF NOT EXISTS idx_org_members_user ON organization_members(user_id);
 CREATE INDEX IF NOT EXISTS idx_campuses_org ON campuses(organization_id);
+CREATE INDEX IF NOT EXISTS idx_campus_rooms_org ON campus_rooms(organization_id);
+CREATE INDEX IF NOT EXISTS idx_campus_rooms_campus ON campus_rooms(campus_id);
 CREATE INDEX IF NOT EXISTS idx_members_org ON members(organization_id);
 CREATE INDEX IF NOT EXISTS idx_members_campus ON members(campus_id);
 CREATE INDEX IF NOT EXISTS idx_members_names ON members(last_name, first_name);
