@@ -122,3 +122,30 @@ export interface AttendanceRecord {
   recorded_by: string | null;
   created_at: string;
 }
+
+export type { DonationType, PaymentMethod, TransactionType } from "./database";
+
+export interface Account {
+  id: string;
+  organization_id: string;
+  name: string;
+  type: "CASH" | "BANK" | "MOBILE_MONEY" | "OTHER";
+  account_number: string | null;
+  currency: string;
+  balance: number;
+  is_default: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface FinancialCategory {
+  id: string;
+  organization_id: string;
+  name: string;
+  type: "INCOME" | "EXPENSE" | "TRANSFER";
+  description: string | null;
+  created_at: string;
+}
+
+export type Transaction = Database["public"]["Tables"]["transactions"]["Row"];
+export type Donation = Database["public"]["Tables"]["donations"]["Row"];
