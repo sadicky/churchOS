@@ -13,7 +13,11 @@ RETURNS SETOF UUID AS $$
     SELECT organization_id
     FROM public.organization_members
     WHERE user_id = auth.uid()
-      AND is_active = TRUE;
+      AND is_active = TRUE
+    UNION
+    SELECT id
+    FROM public.organizations
+    WHERE created_by = auth.uid();
 $$ LANGUAGE sql SECURITY DEFINER STABLE;
 
 -- Checks whether the current user has a specific role in an organization
@@ -39,6 +43,11 @@ RETURNS BOOLEAN AS $$
           AND user_id = auth.uid()
           AND role IN ('SUPER_ADMIN', 'CHURCH_OWNER', 'ADMIN')
           AND is_active = TRUE
+    ) OR EXISTS (
+        SELECT 1
+        FROM public.organizations
+        WHERE id = org_id
+          AND created_by = auth.uid()
     );
 $$ LANGUAGE sql SECURITY DEFINER STABLE;
 
@@ -132,7 +141,10 @@ CREATE POLICY "Users can update their own profile"
 
 CREATE POLICY "Members can view their organization"
     ON public.organizations FOR SELECT
-    USING (id IN (SELECT public.get_user_organizations()));
+    USING (
+        id IN (SELECT public.get_user_organizations())
+        OR created_by = auth.uid()
+    );
 
 CREATE POLICY "Authenticated users can create an organization"
     ON public.organizations FOR INSERT
@@ -481,3 +493,9 @@ CREATE POLICY "System can insert audit logs"
 CREATE POLICY "Admins can view subscriptions"
     ON public.subscriptions FOR SELECT
     USING (public.is_org_admin(organization_id));
+
+CREATE POLICY "Admins can manage subscriptions"
+    ON public.subscriptions FOR ALL
+    USING (public.is_org_admin(organization_id))
+    WITH CHECK (public.is_org_admin(organization_id));
+
