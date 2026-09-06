@@ -254,3 +254,47 @@ export interface CommunityOverviewStats {
   totalVolunteers: number;
   integrationRate: number;
 }
+
+export interface Sermon {
+  id: string;
+  organization_id: string;
+  title: string;
+  preacher: string;
+  sermon_date: string;
+  scripture_reference: string | null;
+  series_name: string | null;
+  description: string | null;
+  content: string | null;
+  audio_url: string | null;
+  video_url: string | null;
+  notes_url: string | null;
+  tags: string[] | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface MediaFile {
+  id: string;
+  organization_id: string;
+  title: string;
+  file_type: "image" | "video" | "audio" | "document" | string;
+  bucket_name: string;
+  file_path: string;
+  file_size_bytes: number | null;
+  mime_type: string | null;
+  uploaded_by: string | null;
+  created_at: string;
+}
+
+export interface SermonOverviewStats {
+  totalSermons: number;
+  totalSeries: number;
+  totalPreachers: number;
+  sermonsThisYear: number;
+}
+
+export interface SermonFilterParams {
+  search?: string;
+  series?: string;
+  preacher?: string;
+}
