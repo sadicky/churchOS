@@ -73,3 +73,23 @@ export interface NavItem {
   badge?: string;
   children?: NavItem[];
 }
+
+import type { Database, GenderType, MaritalStatusType } from "./database";
+
+export type { GenderType, MaritalStatusType };
+export type Member = Database["public"]["Tables"]["members"]["Row"];
+export type MemberInsert = Database["public"]["Tables"]["members"]["Insert"];
+export type MemberUpdate = Database["public"]["Tables"]["members"]["Update"];
+export type Campus = Database["public"]["Tables"]["campuses"]["Row"];
+
+export interface MemberNote {
+  id: string;
+  organization_id: string;
+  member_id: string;
+  author_id: string;
+  title: string | null;
+  content: string;
+  is_private: boolean;
+  created_at: string;
+  updated_at: string;
+}
