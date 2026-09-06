@@ -434,6 +434,23 @@ CREATE POLICY "Users can mark their notifications as read"
     USING (auth.uid() = user_id)
     WITH CHECK (auth.uid() = user_id);
 
+CREATE POLICY "Staff can insert notifications"
+    ON public.notifications FOR INSERT
+    WITH CHECK (organization_id IN (SELECT public.get_user_organizations()));
+
+CREATE POLICY "Users can delete their notifications"
+    ON public.notifications FOR DELETE
+    USING (auth.uid() = user_id);
+
+CREATE POLICY "Members can view communication broadcasts"
+    ON public.communication_broadcasts FOR SELECT
+    USING (organization_id IN (SELECT public.get_user_organizations()));
+
+CREATE POLICY "Staff can manage communication broadcasts"
+    ON public.communication_broadcasts FOR ALL
+    USING (organization_id IN (SELECT public.get_user_organizations()))
+    WITH CHECK (organization_id IN (SELECT public.get_user_organizations()));
+
 CREATE POLICY "Admins can view invitations"
     ON public.invitations FOR SELECT
     USING (public.is_org_admin(organization_id));

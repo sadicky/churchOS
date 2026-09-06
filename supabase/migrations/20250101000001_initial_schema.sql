@@ -649,6 +649,20 @@ CREATE TABLE IF NOT EXISTS notifications (
     created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT TIMEZONE('utc'::text, NOW())
 );
 
+CREATE TABLE IF NOT EXISTS communication_broadcasts (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    organization_id UUID NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+    sender_id UUID REFERENCES profiles(id) ON DELETE SET NULL,
+    channel TEXT NOT NULL DEFAULT 'SMS',
+    target_audience TEXT NOT NULL DEFAULT 'ALL',
+    title TEXT NOT NULL,
+    message TEXT NOT NULL,
+    recipients_count INT NOT NULL DEFAULT 0,
+    status TEXT NOT NULL DEFAULT 'SENT',
+    sent_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT TIMEZONE('utc'::text, NOW()),
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT TIMEZONE('utc'::text, NOW())
+);
+
 CREATE TABLE IF NOT EXISTS invitations (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     organization_id UUID NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,

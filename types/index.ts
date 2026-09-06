@@ -379,3 +379,69 @@ export interface PastoralOverviewStats {
   activePrayerRequests: number;
   answeredPrayers: number;
 }
+
+export interface Announcement {
+  id: string;
+  organization_id: string;
+  author_id: string | null;
+  title: string;
+  content: string;
+  is_pinned: boolean;
+  expires_at: string | null;
+  created_at: string;
+}
+
+export interface AnnouncementDetailed extends Announcement {
+  author?: {
+    id: string;
+    full_name: string | null;
+  } | null;
+}
+
+export interface CommunicationBroadcast {
+  id: string;
+  organization_id: string;
+  sender_id: string | null;
+  channel: "SMS" | "EMAIL" | "NOTIFICATION" | string;
+  target_audience: "ALL" | "LEADERS" | "VOLUNTEERS" | "VISITORS" | string;
+  title: string;
+  message: string;
+  recipients_count: number;
+  status: "SENT" | "PENDING" | "FAILED" | string;
+  sent_at: string;
+  created_at: string;
+}
+
+export interface CommunicationBroadcastDetailed extends CommunicationBroadcast {
+  sender?: {
+    id: string;
+    full_name: string | null;
+  } | null;
+}
+
+export interface AppNotification {
+  id: string;
+  organization_id: string;
+  user_id: string;
+  title: string;
+  message: string;
+  type: "INFO" | "WARNING" | "SUCCESS" | "URGENT" | string;
+  link: string | null;
+  is_read: boolean;
+  created_at: string;
+}
+
+export interface CommunicationOverviewStats {
+  activeAnnouncements: number;
+  pinnedAnnouncements: number;
+  broadcastsThisMonth: number;
+  totalRecipientsReached: number;
+  unreadNotifications: number;
+}
+
+export interface AudienceCounts {
+  all: number;
+  leaders: number;
+  volunteers: number;
+  visitors: number;
+}
