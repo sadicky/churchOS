@@ -298,3 +298,84 @@ export interface SermonFilterParams {
   series?: string;
   preacher?: string;
 }
+
+export interface PastoralVisit {
+  id: string;
+  organization_id: string;
+  member_id: string | null;
+  pastor_id: string;
+  visit_date: string;
+  visit_type: "HOME" | "HOSPITAL" | "OFFICE" | "PHONE" | string;
+  summary: string;
+  follow_up_needed: boolean;
+  follow_up_date: string | null;
+  created_at: string;
+}
+
+export interface PastoralVisitDetailed extends PastoralVisit {
+  member?: {
+    id: string;
+    first_name: string;
+    last_name: string;
+    phone: string | null;
+    email: string | null;
+    address: string | null;
+    membership_status: string;
+  } | null;
+  pastor?: {
+    id: string;
+    full_name: string | null;
+    email: string | null;
+  } | null;
+}
+
+export interface PastoralNote {
+  id: string;
+  organization_id: string;
+  member_id: string | null;
+  author_id: string;
+  confidential_level: number;
+  note: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface PastoralNoteDetailed extends PastoralNote {
+  member?: {
+    id: string;
+    first_name: string;
+    last_name: string;
+  } | null;
+  author?: {
+    id: string;
+    full_name: string | null;
+  } | null;
+}
+
+export interface PrayerRequest {
+  id: string;
+  organization_id: string;
+  member_id: string | null;
+  requester_name: string;
+  title: string;
+  description: string;
+  visibility: "PUBLIC" | "MEMBERS_ONLY" | "PASTORAL_ONLY";
+  status: "PENDING" | "IN_PROGRESS" | "ANSWERED" | "CLOSED";
+  answered_at: string | null;
+  answer_testimony: string | null;
+  created_at: string;
+  updated_at: string;
+  member?: {
+    id: string;
+    first_name: string;
+    last_name: string;
+    phone: string | null;
+  } | null;
+}
+
+export interface PastoralOverviewStats {
+  totalVisitsThisMonth: number;
+  followUpsNeeded: number;
+  activePrayerRequests: number;
+  answeredPrayers: number;
+}

@@ -50,7 +50,7 @@ RETURNS BOOLEAN AS $$
         FROM public.organization_members
         WHERE organization_id = org_id
           AND user_id = auth.uid()
-          AND role IN ('SUPER_ADMIN', 'CHURCH_OWNER', 'PASTOR')
+          AND role IN ('SUPER_ADMIN', 'CHURCH_OWNER', 'ADMIN', 'PASTOR')
           AND is_active = TRUE
     );
 $$ LANGUAGE sql SECURITY DEFINER STABLE;
